@@ -2,9 +2,20 @@
 
 This guide will walk you through the process of creating a WhatsApp bot using the Meta (formerly Facebook) Cloud API with pure Python, and Flask particular. We'll also integrate webhook events to receive messages in real-time and use OpenAI to generate AI responses. For more information on the structure of the Flask application, you can refer to [this documentation](https://github.com/daveebbelaar/python-whatsapp-bot/tree/main/app).
 
+## 🚀 Quick Setup
+
+**For a complete step-by-step setup guide with OpenAI integration, see [SETUP_GUIDE.md](SETUP_GUIDE.md)**
+
+This guide includes:
+- WhatsApp Business API configuration
+- OpenAI assistant setup
+- Webhook configuration with ngrok
+- Testing and troubleshooting
+- Production deployment
+
 ## Prerequisites
 
-1. A Meta developer account — If you don’t have one, you can [create a Meta developer account here](https://developers.facebook.com/).
+1. A Meta developer account — If you don't have one, you can [create a Meta developer account here](https://developers.facebook.com/).
 2. A business app — If you don't have one, you can [learn to create a business app here](https://developers.facebook.com/docs/development/create-an-app/). If you don't see an option to create a business app, select **Other** > **Next** > **Business**.
 3. Familiarity with Python to follow the tutorial.
 
@@ -181,7 +192,7 @@ If you want a cookie cutter example to integrate the OpenAI Assistans API with a
 
 ## Step 7: Add a Phone Number
 
-When you’re ready to use your app for a production use case, you need to use your own phone number to send messages to your users.
+When you're ready to use your app for a production use case, you need to use your own phone number to send messages to your users.
 
 To start sending messages to any WhatsApp number, add a phone number. To manage your account information and phone number, [see the Overview page.](https://business.facebook.com/wa/manage/home/) and the [WhatsApp docs](https://developers.facebook.com/docs/whatsapp/phone-numbers/).
 

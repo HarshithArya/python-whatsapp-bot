@@ -3,7 +3,7 @@ from flask import current_app, jsonify
 import json
 import requests
 
-# from app.services.openai_service import generate_response
+from app.services.openai_service import generate_response
 import re
 
 
@@ -25,9 +25,21 @@ def get_text_message_input(recipient, text):
     )
 
 
-def generate_response(response):
-    # Return text in uppercase
-    return response.upper()
+def get_location_request_message(recipient, text="Could you please share your location?"):
+    """
+    Send a message requesting the user to share their location.
+    Note: WhatsApp doesn't have a direct API to request location, 
+    but you can send a text message asking for it.
+    """
+    return json.dumps(
+        {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": recipient,
+            "type": "text",
+            "text": {"preview_url": False, "body": text},
+        }
+    )
 
 
 def send_message(data):
@@ -82,14 +94,19 @@ def process_whatsapp_message(body):
     message = body["entry"][0]["changes"][0]["value"]["messages"][0]
     message_body = message["text"]["body"]
 
-    # TODO: implement custom function here
-    response = generate_response(message_body)
+    logging.info(f"Received message from {name} ({wa_id}): {message_body}")
 
-    # OpenAI Integration
-    # response = generate_response(message_body, wa_id, name)
-    # response = process_text_for_whatsapp(response)
+    # Generate AI response using OpenAI
+    try:
+        response = generate_response(message_body, wa_id, name)
+        response = process_text_for_whatsapp(response)
+        logging.info(f"AI Response to {name}: {response}")
+    except Exception as e:
+        logging.error(f"Error generating AI response: {e}")
+        response = "I'm sorry, I'm having trouble processing your request right now. Please try again later."
 
-    data = get_text_message_input(current_app.config["RECIPIENT_WAID"], response)
+    # Send response back to the sender (not a hardcoded recipient)
+    data = get_text_message_input(wa_id, response)
     send_message(data)
 
 
